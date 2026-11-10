@@ -159,6 +159,10 @@ ernestdefoe-forum-pet:
       art_upload: Upload
       art_replace: Replace
       art_remove: Remove
+    errors:
+      forum_pet_upload_too_big: That picture is bigger than 2 MB. Try a smaller one.
+      forum_pet_upload_not_image: "That file isn't a PNG, GIF, WebP or JPEG picture between 16 and 4096 pixels wide. SVG isn't accepted."
+      forum_pet_upload_failed: The picture couldn't be uploaded. Try again.
     species:
       dumpling: Dumpling
       sprout: Sprout

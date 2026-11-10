@@ -143,7 +143,19 @@ export class ArtSettings extends Component {
       this.busy = state;
       m.redraw();
       app
-        .request({ method: 'POST', url: `${app.forum.attribute('apiUrl')}/forum-pet/art/${state}`, serialize: (raw: any) => raw, body })
+        .request({
+          method: 'POST',
+          url: `${app.forum.attribute('apiUrl')}/forum-pet/art/${state}`,
+          serialize: (raw: any) => raw,
+          body,
+          // Say why it was refused (too big, not a picture) instead of an empty error.
+          errorHandler: (error: any) => {
+            const code = error?.response?.errors?.[0]?.code;
+            const known = ['forum_pet_upload_too_big', 'forum_pet_upload_not_image', 'forum_pet_upload_failed'];
+            app.alerts.show({ type: 'error' }, t(`errors.${known.includes(code) ? code : 'forum_pet_upload_failed'}`));
+            throw error;
+          },
+        })
         .then(() => this.refresh())
         .catch(() => {})
         .finally(() => {
