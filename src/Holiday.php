@@ -28,7 +28,9 @@ class Holiday
         }
 
         try {
-            if (! $this->container->make(self::CONFIG)->enabled()) {
+            $config = $this->container->make(self::CONFIG);
+            // Festoon off, or its hats switched off: no hat for the pet either.
+            if (! $config->enabled() || ! (($config->parts()['hats'] ?? true))) {
                 return null;
             }
             $hat = $this->container->make(self::SCHEDULE)->active()?->get('hat');

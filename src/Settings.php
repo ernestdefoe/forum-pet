@@ -12,7 +12,7 @@ final class Settings
     public const GROWTH = self::PREFIX.'growth';     // "15,75,300": care needed to hatch, grow up and reach the special form
     public const TIMEZONE = self::PREFIX.'timezone'; // when "today" starts and ends
     public const SIDEBAR = self::PREFIX.'sidebar';
-    public const CORNER = self::PREFIX.'corner';     // off | phones | everywhere
+    public const CORNER = self::PREFIX.'corner';     // a corner widget wherever the sidebar card isn't showing
     public const NAV = self::PREFIX.'nav';
     public const ART = self::PREFIX.'art';           // JSON {state: path on the assets disk}
 
@@ -20,8 +20,6 @@ final class Settings
     public const CARE = 'forumPet.care';
 
     public const DEFAULT_GROWTH = [15, 75, 300];
-
-    public const CORNER_MODES = ['off', 'phones', 'everywhere'];
 
     /** Built-in looks: each species comes in three skins. */
     public const SPECIES_SKINS = [

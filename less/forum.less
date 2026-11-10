@@ -213,6 +213,7 @@
 }
 .PetCare.Button {
   justify-content: center;
+  font-size: 13px;
   width: 100%;
   min-width: 0;
   padding-left: 6px;
@@ -224,6 +225,11 @@
   background: var(--control-bg);
   color: var(--muted-color);
   opacity: 1;
+}
+.PetCard .PetCare.Button {
+  padding-left: 4px;
+  padding-right: 4px;
+  gap: 4px;
 }
 .PetCare--big.Button {
   padding-top: 11px;
@@ -355,7 +361,7 @@ html:not(#x-hi) .PetCard-name {
   &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
 
   // The art leaves room around the pet for hats and sparkles: zoom in on the pet.
-  .Pet { width: 100%; transform: scale(1.3) translateY(4%); }
+  .Pet { width: 100%; transform: scale(1.3) translateY(4%); clip-path: circle(38% at 50% 52%); }
 }
 .PetCorner-dot {
   position: absolute;

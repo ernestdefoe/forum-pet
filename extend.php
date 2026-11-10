@@ -65,10 +65,10 @@ return [
         ->default(Settings::GROWTH, implode(',', Settings::DEFAULT_GROWTH))
         ->default(Settings::TIMEZONE, 'UTC')
         ->default(Settings::SIDEBAR, true)
-        ->default(Settings::CORNER, 'phones')
+        ->default(Settings::CORNER, true)
         ->default(Settings::NAV, true)
         ->serializeToForum('forumPetSidebar', Settings::SIDEBAR, 'boolval')
-        ->serializeToForum('forumPetCorner', Settings::CORNER, fn ($value) => in_array($value, Settings::CORNER_MODES, true) ? $value : 'phones')
+        ->serializeToForum('forumPetCorner', Settings::CORNER, 'boolval')
         ->serializeToForum('forumPetNav', Settings::NAV, 'boolval'),
 
     (new Extend\Event())

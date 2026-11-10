@@ -37,7 +37,7 @@ app.initializers.add('ernestdefoe/forum-pet', () => {
   // The corner widget lives outside the page. Initializers run before the forum's data is
   // loaded and the app mounted (in the same task), so it is mounted just after.
   window.setTimeout(() => {
-    if (!app.forum || !petState() || (app.forum.attribute('forumPetCorner') || 'off') === 'off') return;
+    if (!app.forum || !petState() || !app.forum.attribute('forumPetCorner')) return;
     const root = document.createElement('div');
     root.className = 'PetCorner-root';
     document.body.appendChild(root);

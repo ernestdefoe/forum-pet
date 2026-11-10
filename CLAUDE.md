@@ -15,7 +15,7 @@
 - **Festoon is optional**: `Holiday` checks the class exists and the extension is enabled, and swallows anything Festoon throws. A member who switched Festoon decorations off gets no hat.
 - Index and foreign key names in the care migration are short and carry the table prefix (Laravel's own names pass 64 characters under a long prefix; PostgreSQL and MySQL want them unique across forums sharing a database).
 - **Art** (`js/src/common/art.tsx`) is plain functions called as functions, never JSX tags. Only elements with a `Pet-` class get `transform-box: fill-box`: putting it on every element moves the origin of the art's own `transform` attributes (the mirrored ear, the baby's scale). An element with a CSS animation loses its `transform` attribute, so put attribute transforms on a wrapper.
-- forum.js wires the route, the nav link, the sidebar card (`forumPetCard`; the nav link is `forumPet`), the corner widget (mounted after the app, phones by default) and the banner. The art, the card's insides and the page are the lazy `pet` chunk, fetched when the browser is idle.
+- forum.js wires the route, the nav link, the sidebar card (`forumPetCard`; the nav link is `forumPet`), the corner widget (mounted after the app; shown wherever the sidebar card is not actually visible: phones, sidebar-less pages, Bespoke's index) and the banner. The art, the card's insides and the page are the lazy `pet` chunk, fetched when the browser is idle.
 - Flarum's translator treats a `{user}` parameter as a User model: the member is `{member}`, the pet `{pet}`.
 
 ## Testing

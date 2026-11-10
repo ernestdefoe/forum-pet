@@ -151,11 +151,8 @@ ernestdefoe-forum-pet:
       timezone: Timezone for the pet's day
       timezone_help: "When \"today\" starts and ends for feeding and playing, as a timezone name like America/New_York or Europe/Berlin. Unknown names use UTC."
       sidebar: Show the pet's card in the sidebar
-      corner: Corner widget
-      corner_help: A small pet in the bottom-left corner that opens its card. Phones don't show the sidebar, so it's on for phones by default.
-      corner_off: "Off"
-      corner_phones: On phones
-      corner_everywhere: Everywhere
+      corner: Show a small pet in the corner wherever the sidebar card isn't showing
+      corner_help: "Phones, pages without the sidebar, and themes that hide it get a little pet in the bottom-left corner that opens its card."
       nav: Link to the pet's page in the sidebar menu
       art: Your own art
       art_help: "Upload a picture for any mood (PNG, GIF, WebP or JPEG, up to 2 MB, square works best). It replaces the built-in pet in that mood from the baby stage on; the egg stays as drawn. Uploads take effect at once."

@@ -8,10 +8,16 @@ import PetShell, { loadPet, petChunk } from './PetShell';
 
 const PHONE = '(max-width: 767.98px)';
 
+/** Whether the sidebar card is on the page and actually showing (phones and some themes hide it). */
+function sidebarCardShowing(): boolean {
+  const card = document.querySelector('.item-forumPetCard');
+  return !!card && card.getBoundingClientRect().width > 0;
+}
+
 /**
- * A small pet in the bottom-left corner that opens its card. By default
- * only on phones, where the sidebar is not shown. It steps aside for the
- * composer, on the pet's own page, and wherever the sidebar card is showing.
+ * A small pet in the bottom-left corner that opens its card, wherever the
+ * sidebar card isn't showing: phones, pages without the sidebar, themes
+ * that hide it. It steps aside for the composer and on the pet's own page.
  */
 export default class Corner extends Component {
   open = false;
@@ -42,12 +48,8 @@ export default class Corner extends Component {
     const s = petState();
     if (!s) return null;
 
-    const phone = this.query.matches;
-    const hidden =
-      (app.forum.attribute('forumPetCorner') === 'phones' && !phone) ||
-      (!phone && ui.sidebar) ||
-      app.composer.position !== 'hidden' ||
-      app.current.get('routeName') === 'forumPet';
+    // The app's root redraws before this one, so the sidebar is already drawn.
+    const hidden = (ui.sidebar && sidebarCardShowing()) || app.composer.position !== 'hidden' || app.current.get('routeName') === 'forumPet';
 
     if (hidden) {
       this.open = false;

@@ -168,7 +168,7 @@ export class ArtSettings extends Component {
 
   view() {
     return (
-      <div className="Form-group PetAdmin-art">
+      <div className="Form-group PetAdmin-uploads">
         <label>{t('settings.art')}</label>
         <p className="helpText">{t('settings.art_help')}</p>
         <ul className="PetAdmin-states">

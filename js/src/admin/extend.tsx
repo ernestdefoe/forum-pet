@@ -19,17 +19,7 @@ export default [
       70
     )
     .setting(() => ({ setting: setting('sidebar'), type: 'boolean', label: t('settings.sidebar') }), 60)
-    .setting(
-      () => ({
-        setting: setting('corner'),
-        type: 'select',
-        label: t('settings.corner'),
-        help: t('settings.corner_help'),
-        options: { off: t('settings.corner_off'), phones: t('settings.corner_phones'), everywhere: t('settings.corner_everywhere') },
-        default: 'phones',
-      }),
-      50
-    )
+    .setting(() => ({ setting: setting('corner'), type: 'boolean', label: t('settings.corner'), help: t('settings.corner_help') }), 50)
     .setting(() => ({ setting: setting('nav'), type: 'boolean', label: t('settings.nav') }), 40)
     .customSetting(() => <ArtSettings />, 30)
     .permission(() => ({ permission: 'forumPet.view', icon: 'fas fa-paw', label: t('permissions.view'), allowGuest: true }), 'view', 60)
