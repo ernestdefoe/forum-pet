@@ -24,7 +24,10 @@ return [
             $table->dateTime('milestone_at')->nullable();
         });
 
-        $posts = $schema->getConnection()->table('posts')->where('type', 'comment')->count();
+        // The same posts the pet counts later (Milestones::countPosts), so the first cheer isn't skipped.
+        $posts = $schema->getConnection()->table('posts')->where('type', 'comment')->whereNull('hidden_at')->where('is_private', false)
+            ->when($schema->hasColumn('posts', 'is_approved'), fn ($q) => $q->where('is_approved', true))
+            ->count();
 
         $schema->getConnection()->table('forum_pet')->insert([
             'id' => 1,
