@@ -54,22 +54,24 @@ return [
     (new Extend\ApiResource(ForumResource::class))
         ->fields(fn () => [
             Schema\Arr::make('forumPet')
-                ->visible(fn ($forum, Context $context) => $context->getActor()->can(Settings::VIEW))
+                ->visible(fn ($forum, Context $context) => Settings::canView($context->getActor()))
                 ->get(fn ($forum, Context $context) => resolve(State::class)->present($context->getActor())),
         ]),
 
+    // 🚨 Literal keys: anything here runs while the forum boots, and a class constant would make
+    // every request load our classes then (a worker with a stale autoload map fatals on all of them).
     (new Extend\Settings())
-        ->default(Settings::NAME, 'Pip')
-        ->default(Settings::SPECIES, 'dumpling')
-        ->default(Settings::SKIN, 'peach')
-        ->default(Settings::GROWTH, implode(',', Settings::DEFAULT_GROWTH))
-        ->default(Settings::TIMEZONE, 'UTC')
-        ->default(Settings::SIDEBAR, true)
-        ->default(Settings::CORNER, true)
-        ->default(Settings::NAV, true)
-        ->serializeToForum('forumPetSidebar', Settings::SIDEBAR, 'boolval')
-        ->serializeToForum('forumPetCorner', Settings::CORNER, 'boolval')
-        ->serializeToForum('forumPetNav', Settings::NAV, 'boolval'),
+        ->default('ernestdefoe-forum-pet.name', 'Pip')
+        ->default('ernestdefoe-forum-pet.species', 'dumpling')
+        ->default('ernestdefoe-forum-pet.skin', 'peach')
+        ->default('ernestdefoe-forum-pet.growth', '15,75,300')
+        ->default('ernestdefoe-forum-pet.timezone', 'UTC')
+        ->default('ernestdefoe-forum-pet.sidebar', true)
+        ->default('ernestdefoe-forum-pet.corner', true)
+        ->default('ernestdefoe-forum-pet.nav', true)
+        ->serializeToForum('forumPetSidebar', 'ernestdefoe-forum-pet.sidebar', 'boolval')
+        ->serializeToForum('forumPetCorner', 'ernestdefoe-forum-pet.corner', 'boolval')
+        ->serializeToForum('forumPetNav', 'ernestdefoe-forum-pet.nav', 'boolval'),
 
     (new Extend\Event())
         ->listen(Posted::class, Milestones::class)

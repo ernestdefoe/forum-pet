@@ -27,7 +27,9 @@ class CareController implements RequestHandlerInterface
     {
         $actor = RequestUtil::getActor($request);
         $actor->assertRegistered();
-        $actor->assertCan(Settings::VIEW);
+        if (! Settings::canView($actor)) {
+            throw new \Flarum\User\Exception\PermissionDeniedException();
+        }
         $actor->assertCan(Settings::CARE);
 
         $kind = Arr::get((array) $request->getParsedBody(), 'kind');

@@ -20,7 +20,9 @@ class ShowController implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $actor = RequestUtil::getActor($request);
-        $actor->assertCan(Settings::VIEW);
+        if (! Settings::canView($actor)) {
+            throw new \Flarum\User\Exception\PermissionDeniedException();
+        }
 
         return new JsonResponse($this->state->page($actor));
     }

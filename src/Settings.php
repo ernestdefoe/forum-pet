@@ -32,4 +32,10 @@ final class Settings
     public const STATES = ['idle', 'happy', 'eating', 'sleepy', 'excited', 'celebrating'];
 
     public const KINDS = ['feed', 'play'];
+
+    /** Seeing the pet means seeing the forum too: a forum closed to guests shows them no caretakers. */
+    public static function canView(\Flarum\User\User $actor): bool
+    {
+        return $actor->can('viewForum') && $actor->can(self::VIEW);
+    }
 }
