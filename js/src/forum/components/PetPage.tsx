@@ -4,6 +4,7 @@ import Link from 'flarum/common/components/Link';
 import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import humanTime from 'flarum/common/helpers/humanTime';
 import classList from 'flarum/common/utils/classList';
+import extractText from 'flarum/common/utils/extractText';
 import type Mithril from 'mithril';
 import { petArt } from '../../common/art';
 import { PageStructure, IndexSidebar } from '../pet';
@@ -21,7 +22,7 @@ export default class PetPage extends Page {
 
   oninit(vnode: Mithril.Vnode<any, this>) {
     super.oninit(vnode);
-    app.setTitle(t('page.title', { pet: petState()?.name || '' }));
+    app.setTitle(extractText(t('page.title', { pet: petState()?.name || '' })));
     app.setTitleCount(0);
     this.load();
   }

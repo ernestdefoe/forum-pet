@@ -127,7 +127,7 @@ export function face(p: any, size = ''): Mithril.Children {
   return p.avatar ? (
     <img className={classList('Avatar', size)} src={p.avatar} alt="" loading="lazy" />
   ) : (
-    <span className={classList('Avatar', size)} style={{ '--avatar-bg': stringToColor(p.name || '?') }} aria-hidden="true">
+    <span className={classList('Avatar', size)} style={{ '--avatar-bg': `#${stringToColor(p.name || '?')}` }} aria-hidden="true">
       {(p.name || '?').charAt(0).toUpperCase()}
     </span>
   );

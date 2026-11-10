@@ -26,7 +26,8 @@ app.initializers.add('ernestdefoe/forum-pet', () => {
   });
 
   extend('flarum/forum/components/IndexSidebar', 'items', function (items: ItemList<Mithril.Children>) {
-    if (!petState() || !app.forum.attribute('forumPetSidebar')) return;
+    // Not on the pet's own page: the pet is right there.
+    if (!petState() || !app.forum.attribute('forumPetSidebar') || app.current.get('routeName') === 'forumPet') return;
     items.add('forumPetCard', <PetShell variant="sidebar" />, -100);
   });
 
