@@ -17,6 +17,8 @@ A shared mascot the whole community takes care of. It lives in your Flarum 2 for
 - **On phones** a small pet sits in the corner (out of the composer's way) and opens its card.
 - **Make it yours.** Name it, pick a species and skin from live previews, or upload your own art for each mood.
 - **Light and quick.** The pet's state is worked out at most once a minute and cached, so a page view costs a cache read plus one small lookup for members. The art and the page load after the page is drawn. Animations stop for readers who ask for reduced motion.
+![Every mood](screenshots/moods.png)
+
 - **Permissions** to see the pet (guests by default) and to feed and play with it (members by default).
 - **GDPR**: with Flarum's GDPR extension, the days a member cared for the pet are part of their data export and are removed on erasure.
 
