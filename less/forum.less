@@ -340,6 +340,11 @@ html:not(#x-hi) .PetCard-name {
   // Under the header, composer, dropdowns and modals.
   z-index: 990;
 }
+// Something fixed already sits in the corner (a bottom tab bar, another
+// extension's button): Corner.tsx measures it and the pet stands on top.
+.PetCorner--lifted.PetCorner {
+  bottom: var(--pet-lift);
+}
 .PetCorner-button {
   position: relative;
   display: flex;
