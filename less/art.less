@@ -1,0 +1,315 @@
+// The pet's movement. Every animation is a transform or an opacity, so it
+// stays on the compositor; all of it stops for readers who ask for less motion.
+
+.Pet {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+// Only what moves measures its transforms from its own box. Never set this on
+// every element: it would move the origin of the art's own transform
+// attributes (the mirrored ear, the baby's smaller scale).
+.Pet [class^='Pet-'],
+.Pet [class*=' Pet-'] {
+  transform-box: fill-box;
+}
+
+.Pet-shadow {
+  fill: rgba(30, 20, 40, 0.16);
+  transform-origin: center;
+}
+
+.Pet-body {
+  transform-origin: 50% 100%;
+  animation: fpet-breathe 3.6s ease-in-out infinite;
+}
+.Pet-hop {
+  transform-origin: 50% 100%;
+}
+.Pet-eyes {
+  transform-origin: center;
+  animation: fpet-blink 5s infinite;
+}
+.Pet-crack {
+  opacity: 0;
+}
+.Pet-zzz text {
+  fill: #fff;
+  stroke: #3d2f3b;
+  stroke-width: 2.5px;
+  paint-order: stroke;
+  font-weight: 800;
+  font-family: ui-rounded, 'Trebuchet MS', sans-serif;
+  opacity: 0;
+  animation: fpet-zzz 3.6s ease-out infinite;
+
+  &:nth-child(2) { animation-delay: 1.2s; }
+  &:nth-child(3) { animation-delay: 2.4s; }
+}
+
+// Species
+.Pet-float {
+  animation: fpet-float 3.2s ease-in-out infinite;
+}
+.Pet-tip {
+  transform-origin: center;
+  animation: fpet-twinkle 2.2s ease-in-out infinite;
+}
+.Pet-leaves {
+  transform-origin: 50% 100%;
+  animation: fpet-sway 4s ease-in-out infinite;
+}
+.Pet-tail {
+  transform-origin: 0% 100%;
+}
+
+// Egg: it rocks in its nest.
+.Pet--stage0 .Pet-body {
+  animation: fpet-rock 3.4s ease-in-out infinite;
+}
+.Pet--stage0.Pet--sleepy .Pet-body { animation-duration: 6s; }
+.Pet--stage0.Pet--excited .Pet-body,
+.Pet--stage0.Pet--celebrating .Pet-body,
+.Pet--stage0.Pet--play .Pet-body {
+  animation: fpet-wobble 0.9s ease-in-out infinite;
+}
+.Pet--stage0.Pet--excited .Pet-crack,
+.Pet--stage0.Pet--celebrating .Pet-crack {
+  opacity: 1;
+}
+
+// Special form
+.Pet-aura {
+  transform-origin: center;
+  animation: fpet-pulse 4s ease-in-out infinite;
+}
+.Pet .Pet-orbit {
+  transform-box: view-box;
+  transform-origin: 100px 118px;
+  animation: fpet-orbit 24s linear infinite;
+}
+.Pet-orbit path {
+  transform-origin: center;
+  animation: fpet-twinkle 2.4s ease-in-out infinite;
+}
+.Pet-crown {
+  transform-origin: 50% 100%;
+  animation: fpet-bob 3.6s ease-in-out infinite;
+}
+
+// Moods
+.Pet--happy .Pet-hop { animation: fpet-hop 1.6s ease-in-out infinite; }
+.Pet--happy .Pet-tail,
+.Pet--excited .Pet-tail,
+.Pet--celebrating .Pet-tail { animation: fpet-wag 0.5s ease-in-out infinite alternate; }
+
+.Pet--sleepy .Pet-body { animation: fpet-breathe-deep 5s ease-in-out infinite; }
+.Pet--sleepy .Pet-eyes { animation: none; }
+.Pet--sleepy .Pet-float { animation-duration: 6s; }
+
+.Pet--excited .Pet-hop { animation: fpet-hop-high 0.7s ease-in-out infinite; }
+.Pet--excited .Pet-armL,
+.Pet--celebrating .Pet-armL { transform-origin: 100% 50%; animation: fpet-wave-l 0.45s ease-in-out infinite alternate; }
+.Pet--excited .Pet-armR,
+.Pet--celebrating .Pet-armR { transform-origin: 0% 50%; animation: fpet-wave-r 0.45s ease-in-out infinite alternate; }
+
+.Pet--celebrating .Pet-hop { animation: fpet-hop-high 0.9s ease-in-out infinite; }
+
+.Pet--eating .Pet-eyes { animation: none; }
+.Pet-chew {
+  transform-origin: center;
+  animation: fpet-chew 0.32s ease-in-out infinite alternate;
+}
+
+.Pet-hearts .Pet-heart {
+  transform-origin: center;
+  opacity: 0;
+  animation: fpet-rise 2.8s ease-out infinite;
+}
+.Pet-heart--2 { animation-delay: 1.4s !important; }
+
+.Pet-sparkles path {
+  transform-origin: center;
+  animation: fpet-twinkle 1.1s ease-in-out infinite;
+
+  &:nth-child(2) { animation-delay: 0.35s; }
+  &:nth-child(3) { animation-delay: 0.7s; }
+}
+
+.Pet-confetti rect {
+  animation: fpet-confetti 2.6s linear infinite;
+}
+
+// Feeding: a treat drops into the mouth; the egg glows with hearts.
+.Pet .Pet-food {
+  transform-box: view-box;
+  animation: fpet-food 1.3s ease-in 1 both;
+}
+.Pet-warmth path {
+  transform-origin: center;
+  opacity: 0;
+  animation: fpet-rise 1.6s ease-out 2;
+
+  &:nth-child(2) { animation-delay: 0.5s; }
+}
+
+// Playing: a ball bounces and the pet hops after it.
+.Pet--play .Pet-hop { animation: fpet-play 0.8s ease-in-out infinite; }
+.Pet-ball {
+  transform-origin: center;
+  animation: fpet-ball 0.8s ease-in infinite alternate;
+}
+
+// An admin's own picture moves the same way.
+.Pet--custom {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  aspect-ratio: 1;
+  width: 100%;
+}
+.Pet-customImg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: 50% 100%;
+  animation: fpet-breathe 3.6s ease-in-out infinite;
+}
+.Pet--custom.Pet--stage1 .Pet-customImg { max-width: 74%; max-height: 74%; }
+.Pet--custom.Pet--happy .Pet-customImg { animation: fpet-hop 1.6s ease-in-out infinite; }
+.Pet--custom.Pet--excited .Pet-customImg,
+.Pet--custom.Pet--celebrating .Pet-customImg,
+.Pet--custom.Pet--play .Pet-customImg { animation: fpet-hop-high 0.8s ease-in-out infinite; }
+.Pet--custom.Pet--sleepy .Pet-customImg { animation: fpet-breathe-deep 5s ease-in-out infinite; }
+.Pet-auraCustom {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 209, 102, 0.6), rgba(255, 209, 102, 0) 70%);
+  animation: fpet-pulse 4s ease-in-out infinite;
+}
+
+@keyframes fpet-breathe {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.015, 0.985); }
+}
+@keyframes fpet-breathe-deep {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.03, 0.96); }
+}
+@keyframes fpet-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+@keyframes fpet-zzz {
+  0% { opacity: 0; transform: translate(0, 8px) scale(0.6); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(10px, -14px) scale(1.1); }
+}
+@keyframes fpet-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes fpet-twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.7) rotate(20deg); opacity: 0.7; }
+}
+@keyframes fpet-sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes fpet-rock {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes fpet-wobble {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-7deg); }
+  40% { transform: rotate(6deg); }
+  60% { transform: rotate(-4deg); }
+  80% { transform: rotate(3deg); }
+}
+@keyframes fpet-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+@keyframes fpet-orbit {
+  to { transform: rotate(360deg); }
+}
+@keyframes fpet-bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-3px) rotate(3deg); }
+}
+@keyframes fpet-hop {
+  0%, 60%, 100% { transform: translateY(0) scale(1, 1); }
+  20% { transform: translateY(0) scale(1.05, 0.94); }
+  40% { transform: translateY(-12px) scale(0.97, 1.04); }
+}
+@keyframes fpet-hop-high {
+  0%, 100% { transform: translateY(0) scale(1.04, 0.95); }
+  50% { transform: translateY(-20px) scale(0.97, 1.04); }
+}
+@keyframes fpet-wag {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(10deg); }
+}
+@keyframes fpet-wave-l {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(40deg); }
+}
+@keyframes fpet-wave-r {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-40deg); }
+}
+@keyframes fpet-chew {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0.35); }
+}
+@keyframes fpet-rise {
+  0% { opacity: 0; transform: translateY(6px) scale(0.6); }
+  25% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-26px) scale(1.05); }
+}
+@keyframes fpet-confetti {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(200px) rotate(540deg); opacity: 0; }
+}
+@keyframes fpet-food {
+  0% { transform: translateY(-30px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { transform: translateY(var(--mouth, 88px)) scale(0.8); opacity: 1; }
+  100% { transform: translateY(var(--mouth, 88px)) scale(0); opacity: 0; }
+}
+@keyframes fpet-play {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-8px, -16px) rotate(-6deg); }
+  50% { transform: translate(-12px, 0) rotate(0deg); }
+  75% { transform: translate(-4px, -10px) rotate(4deg); }
+}
+@keyframes fpet-ball {
+  from { transform: translateY(-46px); }
+  to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Pet,
+  .Pet *,
+  .PetScene,
+  .PetScene * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .Pet-zzz text,
+  .Pet-hearts .Pet-heart,
+  .Pet-warmth path {
+    opacity: 1;
+  }
+  .Pet-confetti,
+  .Pet-food {
+    display: none;
+  }
+}

@@ -1,0 +1,721 @@
+@import 'art.less';
+
+// Every text and link sets its colour from Flarum's own properties, behind
+// `html:not(#x-hi)` where a theme's link or heading rule could win
+// (Bespoke colours links at 0,3,1). Scenes and the speech bubble are
+// artwork: they carry their own colours, and dim a little in dark mode.
+
+// ── the scene ─────────────────────────────────────────────────────
+
+.PetScene {
+  --sky1: #cfe9ff;
+  --sky2: #f3faff;
+  --hill: #bfe6a8;
+  --hill2: #9fd388;
+  --sun: rgba(255, 214, 102, 0.9);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  aspect-ratio: 1 / 0.86;
+  overflow: hidden;
+  border-radius: 16px;
+  isolation: isolate;
+  background:
+    radial-gradient(130% 34% at 30% 100%, var(--hill2) 0 70%, transparent 71%),
+    radial-gradient(150% 40% at 75% 102%, var(--hill) 0 70%, transparent 71%),
+    radial-gradient(24px 10px at 70% 22%, rgba(255, 255, 255, 0.95) 0 99%, transparent),
+    radial-gradient(30px 12px at 76% 20%, rgba(255, 255, 255, 0.95) 0 99%, transparent),
+    radial-gradient(22px 9px at 26% 34%, rgba(255, 255, 255, 0.85) 0 99%, transparent),
+    linear-gradient(180deg, var(--sky1), var(--sky2));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 9%;
+    left: 10%;
+    width: 13%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--sun);
+    box-shadow: 0 0 18px 6px var(--sun);
+    z-index: -1;
+  }
+
+  html:not(#x-hi) a& {
+    text-decoration: none;
+  }
+}
+
+.PetScene-pet {
+  position: relative;
+  width: 74%;
+  margin-bottom: 1%;
+}
+
+.PetScene--sleepy {
+  --sky1: #232a52;
+  --sky2: #474c84;
+  --hill: #3f5470;
+  --hill2: #33465f;
+  --sun: #fdf3c4;
+  background:
+    radial-gradient(130% 34% at 30% 100%, var(--hill2) 0 70%, transparent 71%),
+    radial-gradient(150% 40% at 75% 102%, var(--hill) 0 70%, transparent 71%),
+    radial-gradient(1.5px 1.5px at 18% 18%, #fff 0 99%, transparent),
+    radial-gradient(1.5px 1.5px at 38% 10%, #fff 0 99%, transparent),
+    radial-gradient(2px 2px at 56% 26%, #fff 0 99%, transparent),
+    radial-gradient(1.5px 1.5px at 66% 8%, #fff 0 99%, transparent),
+    radial-gradient(1.5px 1.5px at 88% 34%, #fff 0 99%, transparent),
+    radial-gradient(2px 2px at 10% 40%, #fff 0 99%, transparent),
+    radial-gradient(1.5px 1.5px at 46% 44%, #fff 0 99%, transparent),
+    linear-gradient(180deg, var(--sky1), var(--sky2));
+
+  &::after {
+    left: auto;
+    right: 11%;
+    box-shadow: -6px 3px 0 0 #313a6c inset, 0 0 16px 2px rgba(253, 243, 196, 0.45);
+  }
+}
+
+.PetScene--excited {
+  --sky1: #ffe3a3;
+  --sky2: #fff7e3;
+  --sun: rgba(255, 190, 60, 0.95);
+}
+
+.PetScene--celebrating {
+  --sky1: #ffd3e6;
+  --sky2: #fff3cf;
+  --sun: rgba(255, 209, 102, 0.95);
+  background:
+    radial-gradient(130% 34% at 30% 100%, var(--hill2) 0 70%, transparent 71%),
+    radial-gradient(150% 40% at 75% 102%, var(--hill) 0 70%, transparent 71%),
+    conic-gradient(from 180deg at 50% -10%, transparent 0 160deg, rgba(255, 255, 255, 0.35) 170deg 175deg, transparent 185deg 190deg, rgba(255, 255, 255, 0.35) 195deg 200deg, transparent 210deg),
+    linear-gradient(180deg, var(--sky1), var(--sky2));
+
+  // Bunting along the top.
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -4%;
+    right: -4%;
+    height: 12%;
+    background:
+      conic-gradient(from -30deg at 50% 100%, #f43f5e 0 60deg, transparent 0) 0 0 / 28px 100%,
+      conic-gradient(from -30deg at 50% 100%, #f59e0b 0 60deg, transparent 0) 9px 0 / 28px 100%,
+      conic-gradient(from -30deg at 50% 100%, #3b82f6 0 60deg, transparent 0) 18px 0 / 28px 100%;
+    transform: scaleY(-1);
+    opacity: 0.85;
+    z-index: 1;
+  }
+}
+
+// Dark mode: the scene stays art, just less bright.
+[data-theme^='dark'] .PetScene {
+  filter: brightness(0.86) saturate(0.92);
+}
+
+.PetBubble {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: #fff;
+  color: #3d2f3b;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(30, 20, 40, 0.15);
+  transform: translateX(-50%);
+  animation: fpet-pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    transform: translateX(-50%) rotate(45deg);
+    border-radius: 0 0 3px 0;
+  }
+}
+
+@keyframes fpet-pop {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.85); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+// ── chips, growth, buttons ─────────────────────────────────────────
+
+.PetChip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--control-bg);
+  color: var(--control-color);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.PetChip--special {
+  background: linear-gradient(90deg, #ffd166, #f9a8c4);
+  color: #3d2f3b;
+}
+
+.PetGrowth-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted-color);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.PetGrowth-count {
+  color: var(--text-color);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.PetGrowth-track,
+.PetMeter-track {
+  height: 8px;
+  margin-top: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--control-bg);
+}
+.PetGrowth-fill,
+.PetMeter-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f59e0b, #f472b6);
+  transition: width 0.6s ease;
+}
+
+.PetCareRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+.PetCare.Button {
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  padding-left: 6px;
+  padding-right: 6px;
+  white-space: nowrap;
+}
+.PetCare--done.Button,
+.PetCare--done.Button:disabled {
+  background: var(--control-bg);
+  color: var(--muted-color);
+  opacity: 1;
+}
+.PetCare--big.Button {
+  padding-top: 11px;
+  padding-bottom: 11px;
+  font-size: 15px;
+}
+
+.PetKinds {
+  display: inline-flex;
+  gap: 4px;
+  font-size: 12px;
+}
+.PetKinds-feed { color: #e8892a; }
+.PetKinds-play { color: #3b9be0; }
+
+// ── the card (sidebar and corner) ──────────────────────────────────
+
+.PetCard {
+  color: var(--text-color);
+}
+.IndexPage-nav .item-forumPetCard {
+  margin-top: 18px;
+}
+.PetCard-body {
+  padding: 10px 2px 0;
+}
+.PetCard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+html:not(#x-hi) .PetCard-name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.PetCard-mood {
+  margin: 4px 0 10px;
+  color: var(--muted-color);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.PetCard-carers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.PetCard-carersText {
+  min-width: 0;
+  color: var(--muted-color);
+  font-size: 12px;
+  line-height: 1.3;
+}
+.PetCard-carersText--none {
+  margin: 12px 0 0;
+}
+.PetFaces {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding-left: 6px;
+
+  .Avatar {
+    --size: 22px;
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    border: 2px solid var(--body-bg);
+  }
+}
+.PetFaces-one {
+  margin-left: -6px;
+  line-height: 0;
+}
+.PetFaces-more {
+  margin-left: 4px;
+  color: var(--muted-color);
+  font-size: 11px;
+  font-weight: 700;
+  align-self: center;
+}
+.PetCard--loading .PetScene {
+  animation: fpet-wait 1.6s ease-in-out infinite;
+}
+@keyframes fpet-wait {
+  50% { opacity: 0.6; }
+}
+
+// Phones show the sidebar as a menu: the corner widget stands in there.
+@media (max-width: 767.98px) {
+  .IndexPage-nav .item-forumPetCard {
+    display: none;
+  }
+}
+
+// ── corner widget ──────────────────────────────────────────────────
+
+.PetCorner {
+  position: fixed;
+  left: 12px;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  // Under the header, composer, dropdowns and modals.
+  z-index: 990;
+}
+.PetCorner-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  padding: 5px 5px 7px;
+  border: 2px solid var(--control-bg);
+  border-radius: 50%;
+  background: var(--body-bg);
+  color: var(--control-color);
+  font-size: 22px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover { transform: translateY(-2px); }
+  &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+
+  // The art leaves room around the pet for hats and sparkles: zoom in on the pet.
+  .Pet { width: 100%; transform: scale(1.3) translateY(4%); }
+}
+.PetCorner-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--body-bg);
+  border-radius: 50%;
+  background: #f43f5e;
+  animation: fpet-pulse 2s ease-in-out infinite;
+}
+.PetCorner-pop {
+  position: absolute;
+  left: 0;
+  bottom: 72px;
+  width: 290px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 110px);
+  max-height: calc(100dvh - 110px);
+  overflow: auto;
+  padding: 12px;
+  border-radius: 18px;
+  background: var(--body-bg);
+  color: var(--text-color);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.28);
+  animation: fpet-rise-in 0.22s ease-out both;
+}
+.PetCorner-close.Button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.85);
+  color: #3d2f3b;
+  border-radius: 50%;
+}
+@keyframes fpet-rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+@media (min-width: 768px) {
+  .PetCorner { left: 20px; bottom: 20px; }
+  .PetCorner-button { width: 76px; height: 76px; }
+  .PetCorner-pop { bottom: 88px; }
+}
+
+// ── celebration banner ─────────────────────────────────────────────
+
+.PetBanner {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.16), rgba(244, 114, 182, 0.16));
+  border-bottom: 1px solid var(--control-bg);
+  color: var(--text-color);
+}
+.PetBanner-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.PetBanner-icon {
+  color: #f59e0b;
+  font-size: 20px;
+}
+.PetBanner-text {
+  flex: 1 1 220px;
+  min-width: 0;
+  font-weight: 600;
+}
+html:not(#x-hi) .PetBanner-close {
+  color: var(--muted-color);
+}
+
+// ── the page ───────────────────────────────────────────────────────
+
+.PetHome {
+  color: var(--text-color);
+  padding-bottom: 40px;
+}
+.PetHero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.PetScene--big {
+  border-radius: 22px;
+
+  .PetScene-pet { width: 60%; }
+  .PetBubble { top: 14px; padding: 9px 14px; font-size: 14px; }
+}
+.PetHero-kicker {
+  margin: 0;
+  color: var(--muted-color);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+html:not(#x-hi) .PetHero-name {
+  margin: 2px 0 6px;
+  color: var(--text-color);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+.PetHero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 6px;
+  color: var(--muted-color);
+  font-size: 13px;
+}
+.PetStatus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 16px;
+  color: var(--muted-color);
+  font-size: 13px;
+}
+.PetStreak {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 700;
+
+  &::before { content: '🔥 '; }
+}
+.PetMeters {
+  display: grid;
+  gap: 10px;
+}
+.PetMeter-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.PetMeter-name {
+  color: var(--text-color);
+  font-weight: 700;
+}
+.PetMeter-hint {
+  color: var(--muted-color);
+  text-align: right;
+}
+.PetMeter-track { height: 10px; }
+.PetMeter--energy .PetMeter-fill { background: linear-gradient(90deg, #f59e0b, #facc15); }
+.PetMeter--fullness .PetMeter-fill { background: linear-gradient(90deg, #fb7185, #f472b6); }
+.PetMeter--fun .PetMeter-fill { background: linear-gradient(90deg, #38bdf8, #818cf8); }
+
+.PetSection {
+  padding: 16px 18px;
+  border: 1px solid var(--control-bg);
+  border-radius: 16px;
+  color: var(--text-color);
+}
+html:not(#x-hi) .PetSection-title {
+  margin: 0 0 12px;
+  color: var(--text-color);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: none;
+
+  .fas { color: #f59e0b; margin-right: 4px; }
+}
+
+.PetJourney-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.PetJourney-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  text-align: center;
+}
+.PetJourney-art {
+  position: relative;
+  width: 100%;
+  max-width: 108px;
+  aspect-ratio: 1;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--control-bg);
+  box-sizing: border-box;
+
+  .is-current & {
+    box-shadow: 0 0 0 3px var(--primary-color);
+  }
+  .PetJourney-step:not(.is-reached) & .Pet {
+    filter: grayscale(1) brightness(1.1);
+    opacity: 0.4;
+  }
+}
+.PetJourney-step:not(.is-current) .Pet * {
+  animation: none !important;
+}
+.PetJourney-lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-color);
+  font-size: 18px;
+}
+.PetJourney-name {
+  margin-top: 6px;
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 700;
+}
+.PetJourney-when {
+  color: var(--muted-color);
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+.PetColumns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(~"min(280px, 100%)", 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.PetPeople,
+.PetBoard {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.PetPeople {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(~"min(190px, 100%)", 1fr));
+  gap: 8px 14px;
+}
+.PetPeople-one {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+html:not(#x-hi) .PetPeople-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-color);
+  text-decoration: none;
+
+  .Avatar {
+    --size: 28px;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+}
+.PetPeople-name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.PetBoard-one {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--control-bg);
+
+  &:last-child { border-bottom: 0; }
+}
+.PetBoard-rank {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--control-bg);
+  color: var(--control-color);
+  font-size: 12px;
+  font-weight: 800;
+}
+.PetBoard-one--1 .PetBoard-rank { background: #f5c542; color: #3d2f3b; }
+.PetBoard-one--2 .PetBoard-rank { background: #cfd6e0; color: #3d2f3b; }
+.PetBoard-one--3 .PetBoard-rank { background: #e0a46b; color: #3d2f3b; }
+.PetBoard-count {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--muted-color);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.PetMore,
+.PetEmpty {
+  margin: 10px 0 0;
+  color: var(--muted-color);
+  font-size: 13px;
+}
+.PetFootnote {
+  margin-top: 18px;
+  color: var(--muted-color);
+  font-size: 13px;
+  text-align: center;
+
+  .fas { color: #f59e0b; }
+}
+
+@media (max-width: 767.98px) {
+  .PetHero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .PetScene--big .PetScene-pet { width: 66%; }
+  html:not(#x-hi) .PetHero-name { font-size: 28px; }
+  .PetJourney-steps { gap: 8px; }
+  .PetJourney-art { padding: 5px; }
+  .PetJourney-when { font-size: 10.5px; }
+  .PetSection { padding: 14px; }
+}
+
+// ── confetti (evolution) ───────────────────────────────────────────
+
+.PetConfetti {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  overflow: hidden;
+  pointer-events: none;
+
+  span {
+    position: absolute;
+    width: 8px;
+    height: 13px;
+    border-radius: 2px;
+    animation: fpet-burst 1.9s cubic-bezier(0.15, 0.6, 0.4, 1) both;
+  }
+}
+@keyframes fpet-burst {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  35% { transform: translate(calc(var(--dx) * 0.7), var(--dy)) rotate(calc(var(--r) * 0.4)); opacity: 1; }
+  100% { transform: translate(var(--dx), calc(var(--dy) + 340px)) rotate(var(--r)); opacity: 0; }
+}

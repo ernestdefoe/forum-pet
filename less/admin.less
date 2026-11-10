@@ -1,0 +1,95 @@
+@import 'art.less';
+
+.PetAdmin-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 120px));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.PetAdmin-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 8px 8px;
+  border: 2px solid var(--control-bg);
+  border-radius: 14px;
+  background: var(--body-bg);
+  color: var(--text-color);
+  cursor: pointer;
+
+  &.is-active { border-color: var(--primary-color); }
+  &:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+}
+.PetAdmin-tile:not(.is-active) .Pet * { animation: none !important; }
+.PetAdmin-art { width: 84px; }
+.PetAdmin-tileName { font-weight: 700; font-size: 13px; }
+.PetAdmin-skins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.PetAdmin-skin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 2px solid var(--control-bg);
+  border-radius: 999px;
+  background: var(--body-bg);
+  color: var(--text-color);
+  font-size: 13px;
+  cursor: pointer;
+
+  &.is-active { border-color: var(--primary-color); font-weight: 700; }
+}
+.PetAdmin-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.PetAdmin-growthRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.PetAdmin-growthField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 120px;
+  font-weight: normal;
+
+  span { font-size: 12px; color: var(--muted-color); }
+}
+.PetAdmin-invalid { color: #d14343; }
+.PetAdmin-reset { margin-top: 6px; }
+.PetAdmin-states {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.PetAdmin-state {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.PetAdmin-stateArt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--control-bg);
+  color: var(--muted-color);
+  overflow: hidden;
+
+  img { width: 100%; height: 100%; object-fit: contain; }
+}
+.PetAdmin-stateName { min-width: 90px; font-weight: 600; }
+.PetAdmin-stateButtons { display: inline-flex; gap: 6px; }
