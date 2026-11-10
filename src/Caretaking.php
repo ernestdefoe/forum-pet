@@ -63,21 +63,27 @@ class Caretaking
      */
     public function grow(): ?int
     {
-        $pet = Pet::current();
-        $target = $this->config->stageFor($pet->care_total);
-        if ($target <= $pet->stage) {
-            return null;
+        // A lost race means someone else just moved it, perhaps not as far as the care
+        // total now earns (they read it a moment earlier): read again and try once more.
+        for ($attempt = 0; $attempt < 2; $attempt++) {
+            $pet = Pet::current();
+            $target = $this->config->stageFor($pet->care_total);
+            if ($target <= $pet->stage) {
+                return null;
+            }
+
+            $now = Carbon::now();
+            $changes = ['stage' => $target];
+            for ($stage = $pet->stage + 1; $stage <= $target; $stage++) {
+                $changes[Pet::STAGE_DATES[$stage]] = $now;
+            }
+
+            if (Pet::query()->whereKey(1)->where('stage', $pet->stage)->update($changes)) {
+                return $target;
+            }
         }
 
-        $now = Carbon::now();
-        $changes = ['stage' => $target];
-        for ($stage = $pet->stage + 1; $stage <= $target; $stage++) {
-            $changes[Pet::STAGE_DATES[$stage]] = $now;
-        }
-
-        $won = Pet::query()->whereKey(1)->where('stage', $pet->stage)->update($changes);
-
-        return $won ? $target : null;
+        return null;
     }
 
     /** A new egg. Today's care is cleared too, so everyone can welcome it. */
