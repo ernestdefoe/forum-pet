@@ -279,4 +279,41 @@ class PetTest extends TestCase
         $this->assertSame('celebrating', $state['mood']);
         $this->assertSame(['kind' => 'milestone', 'count' => 100], array_intersect_key($state['celebrate'], ['kind' => 1, 'count' => 1]));
     }
+
+    #[Test]
+    public function a_forum_closed_to_guests_shows_them_no_pet(): void
+    {
+        $this->app();
+        // Installed on a forum open to guests, so guests were given the pet too.
+        $this->assertTrue(Permission::query()->where('group_id', 2)->where('permission', 'forumPet.view')->exists());
+
+        // Closed to guests the usual way: members get viewForum themselves.
+        Permission::query()->where('group_id', 2)->where('permission', 'viewForum')->delete();
+        Permission::query()->insert(['group_id' => 3, 'permission' => 'viewForum']);
+
+        $this->assertSame(403, $this->api('GET', '', null)[0]);
+        $this->assertSame(200, $this->api('GET', '', 2)[0]);
+    }
+
+    #[Test]
+    public function a_milestone_crossed_by_quick_posts_is_cheered_at_once(): void
+    {
+        $this->prepareDatabase([
+            \Flarum\Discussion\Discussion::class => [
+                ['id' => 1, 'title' => 'Chat', 'created_at' => Carbon::now(), 'user_id' => 2, 'first_post_id' => 1, 'comment_count' => 97, 'last_post_number' => 97],
+            ],
+            \Flarum\Post\Post::class => array_map(fn ($i) => ['id' => $i, 'discussion_id' => 1, 'user_id' => 2, 'type' => 'comment', 'content' => '<t><p>Hi</p></t>', 'created_at' => Carbon::now()->subHour(), 'number' => $i], range(1, 97)),
+        ]);
+
+        // Posts 98, 99 and 100 within a second of each other, by three members (flood control is per member).
+        foreach ([2, 3, 4] as $as) {
+            $response = $this->send($this->request('POST', '/api/posts', [
+                'authenticatedAs' => $as,
+                'json' => ['data' => ['type' => 'posts', 'attributes' => ['content' => 'Nearly there'], 'relationships' => ['discussion' => ['data' => ['type' => 'discussions', 'id' => '1']]]]],
+            ]));
+            $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+        }
+
+        $this->assertSame(100, Pet::query()->value('milestone'));
+    }
 }
