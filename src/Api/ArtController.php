@@ -12,7 +12,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/** POST (upload) and DELETE /api/forum-pet/art/{state}: an admin's own picture for a mood. */
+/**
+ * POST (upload) and DELETE /api/forum-pet/art/{state}: an admin's own picture for a mood.
+ *
+ * A file upload into the assets disk plus one setting, not a model: there is
+ * nothing for a JSON:API resource to represent.
+ */
 class ArtController implements RequestHandlerInterface
 {
     public function __construct(private readonly Art $art)

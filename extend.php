@@ -43,6 +43,9 @@ return [
 
     new Extend\Locales(__DIR__.'/locale'),
 
+    // Plain endpoints, not JSON:API resources: there is one pet (no list to page, filter or
+    // include), its state is computed from a cache, and the rest are actions (feed or play
+    // once a day, upload a picture, start over). See "API" in the README.
     (new Extend\Routes('api'))
         ->get('/forum-pet', 'forumPet.show', Api\ShowController::class)
         ->post('/forum-pet/care', 'forumPet.care', Api\CareController::class)

@@ -13,7 +13,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * POST /api/forum-pet/care {kind: feed|play}. Once per member per day for
+ * POST /api/forum-pet/care {kind: feed|play}.
+ *
+ * An action, not a resource write: the client sends only what it did; the
+ * server records it once a day (a unique key decides) and answers with the
+ * pet's new state. Care rows are never created, edited or listed directly. Once per member per day for
  * each; a repeat answers done: false with the current state, so a second
  * tab or a double tap simply shows "already done today".
  */

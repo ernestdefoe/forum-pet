@@ -9,7 +9,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/** POST /api/forum-pet/reset: admins start over with a new egg. */
+/**
+ * POST /api/forum-pet/reset: admins start over with a new egg.
+ *
+ * An action on the one pet (back to an egg, today's care cleared), not a
+ * resource update anyone should be able to express as a PATCH.
+ */
 class ResetController implements RequestHandlerInterface
 {
     public function __construct(private readonly Caretaking $caretaking)

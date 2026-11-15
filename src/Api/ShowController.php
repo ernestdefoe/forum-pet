@@ -10,7 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-/** GET /api/forum-pet: everything the pet's page shows. */
+/**
+ * GET /api/forum-pet: everything the pet's page shows.
+ *
+ * A plain endpoint, not a JSON:API resource: there is one pet, and this is a
+ * state computed for the viewer (mood, needs, today's caretakers, their streak)
+ * from a cache, not a model to list, page, filter or include.
+ */
 class ShowController implements RequestHandlerInterface
 {
     public function __construct(private readonly State $state)

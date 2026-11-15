@@ -22,6 +22,17 @@ A shared mascot the whole community takes care of. It lives in your Flarum 2 for
 - **Permissions** to see the pet (guests by default) and to feed and play with it (members by default).
 - **GDPR**: with Flarum's GDPR extension, the days a member cared for the pet are part of their data export and are removed on erasure.
 
+## API
+
+Forum Pet uses plain endpoints rather than JSON:API resources, because there is one pet per forum (nothing to list, page, filter or include), its state is computed for each reader from a cache, and everything else is an action:
+
+- `GET /api/forum-pet` returns the pet as the current reader sees it: name, look, stage and growth, mood and needs, today's caretakers, the most devoted caretakers and the reader's streak. Needs permission to view the forum and to see the pet.
+- `POST /api/forum-pet/care` with `{"kind": "feed"}` or `{"kind": "play"}` feeds or plays with the pet, once per member per day each. Answers `{"done": true|false, "evolved": stage|null, "state": {…}}`; `done: false` means it was already done today.
+- `POST /api/forum-pet/art/{mood}` (multipart, field `art`) and `DELETE /api/forum-pet/art/{mood}` upload or remove an admin's own picture for a mood. Admins only.
+- `POST /api/forum-pet/reset` starts over with a new egg. Admins only.
+
+The same pet state also rides on the forum's own payload as the `forumPet` attribute, so pages need no extra request.
+
 ## Install
 
 ```sh
