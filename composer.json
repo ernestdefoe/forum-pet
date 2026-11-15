@@ -54,6 +54,7 @@
                 "color": "#fff"
             },
             "optional-dependencies": [
+                "flarum/approval",
                 "flarum/gdpr",
                 "ernestdefoe/festoon"
             ]
