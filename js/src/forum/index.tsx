@@ -15,9 +15,9 @@ import Banner from './components/Banner';
  * chunk (pet), fetched once the browser is idle after the page is drawn.
  */
 
-app.initializers.add('ernestdefoe/forum-pet', () => {
-  app.routes['forumPet'] = { path: '/pet', component: () => import('./pet').then(async (pet) => (await pet.loadCore(), { default: pet.PetPage })) };
+export { default as extend } from './extend';
 
+app.initializers.add('ernestdefoe/forum-pet', () => {
   // String form: IndexSidebar is in a lazy chunk, and extending an imported copy patches one core never renders.
   extend('flarum/forum/components/IndexSidebar', 'navItems', function (items: ItemList<Mithril.Children>) {
     const s = petState();
