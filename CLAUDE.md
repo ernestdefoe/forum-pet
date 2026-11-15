@@ -23,5 +23,5 @@
 ## Testing
 
 - `composer test:setup && composer test` (integration; SQLite and prefixed MySQL both pass), `composer analyse:phpstan`.
-- `cd js && npm ci && npm run build && npm run format-check`.
+- `cd js && npm ci && npm run build && npm run format-check && npm run check-typings` (against core's typings in vendor/: run `composer install` first).
 - The showcase seed is `~/github/showcase/seeds/98-forum-pet.php`; `~/github/scopes/forum-pet-shots/local-seed.php` runs it against ~/Herd/petdev, and `gallery.mjs` renders every species × stage × mood.

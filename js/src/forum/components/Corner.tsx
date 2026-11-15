@@ -4,7 +4,7 @@ import Button from 'flarum/common/components/Button';
 import classList from 'flarum/common/utils/classList';
 import type Mithril from 'mithril';
 import { petState, t, ui } from '../utils/store';
-import PetShell, { loadPet, petChunk } from './PetShell';
+import PetShell, { loadPet, petChunk, whenIdle } from './PetShell';
 
 const PHONE = '(max-width: 767.98px)';
 
@@ -77,8 +77,7 @@ export default class Corner extends Component {
     document.addEventListener('keydown', this.closeOnEscape);
     window.addEventListener('resize', this.redraw);
     this.measure(vnode.dom);
-    if ('requestIdleCallback' in window) (window as any).requestIdleCallback(() => loadPet(), { timeout: 2500 });
-    else window.setTimeout(() => loadPet(), 400);
+    whenIdle(loadPet, 2500);
   }
 
   onupdate(vnode: Mithril.VnodeDOM<any, this>) {

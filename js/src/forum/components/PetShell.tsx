@@ -16,9 +16,10 @@ export function loadPet(): Promise<void> {
   return loading;
 }
 
-function whenIdle(fn: () => void): void {
-  if ('requestIdleCallback' in window) (window as any).requestIdleCallback(fn, { timeout: 1500 });
-  else window.setTimeout(fn, 200);
+/** Run once the browser is idle (or soon, where there's no requestIdleCallback: older Safari). */
+export function whenIdle(fn: () => void, timeout = 1500): void {
+  if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(fn, { timeout });
+  else window.setTimeout(fn, Math.min(timeout, 400));
 }
 
 /**
