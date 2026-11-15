@@ -48,7 +48,15 @@ export function care(kind: Kind, onEvolve?: (stage: number) => void): Promise<vo
   ui.busy = kind;
   m.redraw();
   return app
-    .request<any>({ method: 'POST', url: `${app.forum.attribute('apiUrl')}/forum-pet/care`, body: { kind } })
+    .request<any>({
+      method: 'POST',
+      url: `${app.forum.attribute('apiUrl')}/forum-pet/care`,
+      body: { kind },
+      // Say what went wrong in the pet's own words, instead of core's generic alert.
+      errorHandler: (error: any) => {
+        app.alerts.show({ type: 'error' }, careError(kind, error?.status));
+      },
+    })
     .then((res) => {
       setPetState(res.state);
       ui.flash = { kind, line: Math.floor(Math.random() * 4) + 1, evolved: res.evolved ?? null, already: !res.done };
@@ -62,11 +70,21 @@ export function care(kind: Kind, onEvolve?: (stage: number) => void): Promise<vo
       );
       if (res.evolved && onEvolve) onEvolve(res.evolved);
     })
-    .catch(() => {})
+    .catch(() => {
+      // The alert is already up; don't leave an earlier thank-you showing over it.
+      ui.flash = null;
+    })
     .finally(() => {
       ui.busy = null;
       m.redraw();
     });
+}
+
+function careError(kind: Kind, status?: number): Mithril.Children {
+  const pet = petState()?.name || '';
+  if (status === 401 || status === 403) return t('error.not_allowed', { pet });
+  if (status === 0) return t('error.offline', { pet });
+  return t(`error.${kind}`, { pet });
 }
 
 /** The thank-you line for what just happened. */

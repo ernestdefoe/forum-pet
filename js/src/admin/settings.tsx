@@ -118,6 +118,8 @@ export class GrowthSettings extends Component<{ page: any }> {
 export class ArtSettings extends Component {
   art: Record<string, string> = {};
   busy: string | null = null;
+  /** The mood whose last upload or removal failed: its row is marked until the next try. */
+  failed: string | null = null;
 
   oninit(vnode: Mithril.Vnode) {
     super.oninit(vnode);
@@ -140,38 +142,37 @@ export class ArtSettings extends Component {
       if (!file) return;
       const body = new FormData();
       body.append('art', file);
-      this.busy = state;
-      m.redraw();
-      app
-        .request({
-          method: 'POST',
-          url: `${app.forum.attribute('apiUrl')}/forum-pet/art/${state}`,
-          serialize: (raw: any) => raw,
-          body,
-          // Say why it was refused (too big, not a picture) instead of an empty error.
-          errorHandler: (error: any) => {
-            const code = error?.response?.errors?.[0]?.code;
-            const known = ['forum_pet_upload_too_big', 'forum_pet_upload_not_image', 'forum_pet_upload_failed'];
-            app.alerts.show({ type: 'error' }, t(`errors.${known.includes(code) ? code : 'forum_pet_upload_failed'}`));
-            throw error;
-          },
-        })
-        .then(() => this.refresh())
-        .catch(() => {})
-        .finally(() => {
-          this.busy = null;
-          m.redraw();
-        });
+      this.send(state, 'POST', body);
     };
     input.click();
   }
 
   remove(state: string) {
+    this.send(state, 'DELETE');
+  }
+
+  /** Upload or remove one mood's picture, and say why if it didn't work. */
+  send(state: string, method: 'POST' | 'DELETE', body?: FormData) {
     this.busy = state;
+    this.failed = null;
+    m.redraw();
     app
-      .request({ method: 'DELETE', url: `${app.forum.attribute('apiUrl')}/forum-pet/art/${state}` })
+      .request({
+        method,
+        url: `${app.forum.attribute('apiUrl')}/forum-pet/art/${state}`,
+        ...(body ? { serialize: (raw: any) => raw, body } : {}),
+        // Say why it was refused (too big, not a picture) instead of an empty error.
+        errorHandler: (error: any) => {
+          const code = error?.response?.errors?.[0]?.code;
+          const known = ['forum_pet_upload_too_big', 'forum_pet_upload_not_image', 'forum_pet_upload_failed'];
+          const fallback = method === 'DELETE' ? 'forum_pet_remove_failed' : 'forum_pet_upload_failed';
+          app.alerts.show({ type: 'error' }, t(`errors.${known.includes(code) ? code : fallback}`));
+        },
+      })
       .then(() => this.refresh())
-      .catch(() => {})
+      .catch(() => {
+        this.failed = state;
+      })
       .finally(() => {
         this.busy = null;
         m.redraw();
@@ -185,7 +186,7 @@ export class ArtSettings extends Component {
         <p className="helpText">{t('settings.art_help')}</p>
         <ul className="PetAdmin-states">
           {STATES.map((state) => (
-            <li className="PetAdmin-state">
+            <li className={classList('PetAdmin-state', this.failed === state && 'is-failed')}>
               <span className="PetAdmin-stateArt">
                 {this.art[state] ? <img src={this.art[state]} alt="" /> : <i className="fas fa-image" aria-hidden="true" />}
               </span>
